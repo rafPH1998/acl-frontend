@@ -95,7 +95,7 @@
             </div>
         </div>
         <div v-else>
-            Carregando usuário...
+            <SppinerView :loading="loading" class="w-6 h-6 stroke-blue-700 text-blue-800"/>
         </div>
     </MainView>
  </template>
@@ -108,6 +108,7 @@ import { useStore } from 'vuex'
 import SppinerView from '@/icons/SppinerView.vue'
 import SaveView from '@/icons/SaveView.vue'
 import BackView from '@/icons/BackView.vue'
+import { toast } from 'vue3-toastify';
 
 const props = defineProps({
     id: {
@@ -213,6 +214,10 @@ const updatePermissions = async () => {
         console.error('Erro na requisição:', error);
     } finally {
         loadingUpdatePermission.value = false
+        toast.success("Alterações salvas com sucesso!", {
+            autoClose: 2000,
+            position: 'bottom-right'
+        });
     }
 };
 

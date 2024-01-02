@@ -44,8 +44,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div v-else>
-                            Carregando usuários...
+                        <div v-else class="flex justify-center mt-10">
+                            <SppinerView :loading="loading" class="w-8 h-8 stroke-blue-600 text-blue-500"/>
                         </div>
                     </div>
                 </div>
@@ -59,6 +59,7 @@ import MainView from '@/views/layout/MainView.vue';
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import SppinerView from '@/icons/SppinerView.vue'
 
 const store = useStore()
 const users = ref([])
