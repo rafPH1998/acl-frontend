@@ -50,8 +50,6 @@
 
                 </div>
             </form>
-
-            {{ permissionsSelected }}
  
             <div class="mt-2 p-6">
                 <div v-for="(descriptions, groupName) in groupedPermissions" :key="groupName">
@@ -60,10 +58,10 @@
                         <p v-for="{ id, description } in descriptions" :key="id" class="text-gray-500">
                             <label class="flex items-center">
                                 <input 
-                                class="ml-2 accent-blue-700/25 w-4 h-4" 
+                                class="ml-2 accent-blue-700/25 w-4 h-4 cursor-pointer" 
                                 type="checkbox" 
-                                :checked="checkPermission(groupName, description)"
-                                @click="syncPermission(id)">
+                                :checked="checkPermissions(groupName, description)"
+                                @click="syncPermissions(id)">
                                 {{ description }}
                             </label>
                         </p>
@@ -82,7 +80,7 @@
                     </router-link>
 
                     <button 
-                        @click="updateUser()"
+                        @click="updatePermissions()"
                         class="items-center border rounded 
                         px-6 py-1 bg-blue-500 text-white text-xs 
                         flex font-bold hover:bg-blue-600">
@@ -123,7 +121,7 @@ const users = reactive ({
 
 let permissions = ref ([])
 const permissionsUser = ref ([])
-const permissionsSelected = ref ([])
+const permissionsIds = ref ()
 const loading = ref(false);
 
 onMounted(async () => {
@@ -150,6 +148,7 @@ onMounted(async () => {
     }
 })
 
+//AGRUDA AS PERMISSSOES POR NOME
 const groupedPermissions = computed(() => {
     const res = {};
 
@@ -171,17 +170,31 @@ const groupedPermissions = computed(() => {
     return res;
 });
 
-const syncPermission = (permissionId) => {
-   permissionsSelected.value.push(permissionId)
+/* PEGA OS IDS DAS PERMISSOES DO USUARIO */
+const permissionsIdsUserSelected = computed(() => {
+    return permissionsUser.value.map(permission => permission.id);
+});
+
+/* SINCRONIZA AS PERMISSOES  */
+const syncPermissions = (permissionId) => {
+
+    permissionsIds.value = permissionsIdsUserSelected.value
+    const index = permissionsIds.value.indexOf(permissionId);
+
+    if (index !== -1) {
+        permissionsIds.value.splice(index, 1);
+    } else {
+        permissionsIds.value.push(permissionId);
+    }
 }
 
-const updateUser = async () => {
-   // const permissions = [permissionsSelected];
-   console.log(permissionsSelected.value)
+/* ATUALIZA INFORMACOES PARA O BACKEND  */
+const updatePermissions = async () => {
+   console.log(permissionsIds.value)
     try {
         const response = await axios.post(
             `http://localhost:8899/users/${props.id}/permissions-sync`,
-            { permissions: permissionsSelected.value },
+            { permissions: permissionsIds.value },
             { 
                 headers: {
                     Authorization: `Bearer ${store.state.token}`
@@ -195,11 +208,12 @@ const updateUser = async () => {
     }
 };
 
-
-const checkPermission = (groupName, description) => {
+/* CHEGA AS PERMISSOES PARA DEIXAR O CHECKED NO HTML ATIVADO OU DESATIVADO */
+const checkPermissions = (groupName, description) => {
     return permissionsUser.value.some(permission => permission.name === groupName && permission.description === description);
 }
 
+/* PEGA TODAS AS PERMISSOES DISPONIVEIS NO SISTEMA */
 const getPermissions = async () => {
     try {
         return await axios.get('http://localhost:8899/permissions', {
