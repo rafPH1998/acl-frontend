@@ -45,7 +45,7 @@
                             </table>
                         </div>
                         <div v-else class="flex justify-center mt-10">
-                            <SppinerView :loading="loading" class="w-8 h-8 stroke-blue-600 text-blue-500"/>
+                            <SppinerView :loading="loading" class="w-5 h-5 stroke-blue-600 text-blue-500"/>
                         </div>
                     </div>
                 </div>

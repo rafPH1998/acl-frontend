@@ -92,20 +92,21 @@ const toggleSideNav = () => {
 };
 
 const logout = async () => {
-    try {
+  try {
 
-        const response = await axios.post('http://localhost:8899/logout', null, {
-            headers: {
-                Authorization: `Bearer ${store.state.token}`
-            }
-        });
-        if (response.status === 204) {
-            router.push({ name: 'login' })
-        }
-
-    } catch (error) {
-        console.error(error)
+    const response = await axios.post('http://localhost:8899/logout', null, {
+      headers: {
+        Authorization: `Bearer ${store.state.token}`
+      }
+    });
+    if (response.status === 204) {
+      store.dispatch('removeToken');
+      router.push({ name: 'login' })
     }
+
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 </script>
