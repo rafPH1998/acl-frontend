@@ -78,7 +78,7 @@ const getUserAuth = async () => {
                 Authorization: `Bearer ${store.state.token}`
             }
         });
-        store.dispatch('setUser', response.data.data.name)
+        store.dispatch('setUser', response.data.data)
     } catch (error) {
         console.error(error)
     }

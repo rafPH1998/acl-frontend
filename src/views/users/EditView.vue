@@ -118,6 +118,7 @@ onMounted(async () => {
 
     const perms = await getPermissions()
     permissions.value = perms.data.data;
+    console.log(permissions)
 
   } catch (error) {
     console.error(error)

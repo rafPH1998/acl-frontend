@@ -2,6 +2,8 @@
     <nav class="bg-white border-b border-gray-300">
         <div class="flex justify-between items-center px-9">
 
+          <!-- {{ store.state.user.permissions }} -->
+
             <button @click="toggleSideNav()" id="menuBtn">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 stroke-blue-700">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -14,7 +16,7 @@
 
             <div class="flex items-center">
                 <div class="mr-4">
-                   <p class="text-xs">Bem vindo (a), {{ store.state.user }}</p>
+                   <p class="text-xs">Bem vindo (a), {{ store.state.user.name }}</p>
                 </div>
 
                 <button class="mr-2">
@@ -39,6 +41,7 @@
         <div class="p-4 space-y-4">
 
             <router-link 
+                v-if="hasPermission('DASHBOARD', 'Visualizar')"
                 :to="{name: 'dashboard'}" 
                 :class="{ 'bg-blue-600 text-white': $route.name === 'dashboard' }"
                 class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
@@ -49,6 +52,7 @@
             </router-link>
 
             <router-link 
+                v-if="hasPermission('USUARIOS', 'Visualizar')"
                 :to="{name: 'usuarios'}" 
                 :class="{ 'bg-blue-600 text-white': $route.name === 'usuarios' }"
                 class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
@@ -58,12 +62,15 @@
                 <span>Usuários</span>
             </router-link>
 
-            <a href="#" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                </svg>
-                <span>Permissões</span>
-            </a>
+            <router-link
+              v-if="hasPermission('PERMISSOES', 'Visualizar')"
+              :to="{name: 'usuarios'}" 
+              class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+              </svg>
+              <span>Permissões</span>
+            </router-link>
 
             <button 
                 @click.prevent="logout()" 
@@ -82,6 +89,7 @@ import { ref } from 'vue';
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { hasPermission } from '@/utils/perms';
 
 const isSideNavHidden = ref(true);
 const router = useRouter()
@@ -108,6 +116,8 @@ const logout = async () => {
     console.error(error)
   }
 }
+
+
 
 </script>
 
