@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import IndexView from '../views/IndexView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import LoginView from '../views/auth/LoginView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
@@ -9,12 +8,6 @@ import CreateView from '../views/permissioes/CreateView.vue'
 import store from '@/store'
 
 const routes = [
-    {
-      path: '/',
-      name: 'home', 
-      component: IndexView,
-      meta: { requiresAuth: true }
-    },
     {
       path: '/dashboard',
       name: 'dashboard', 
