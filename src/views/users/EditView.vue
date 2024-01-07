@@ -31,7 +31,19 @@
         </div>
       </form>
 
+
       <div class="mt-2 p-6">
+
+        <p class="flex flex-row-reverse">
+          <router-link :to="{ name: 'permissoes', params: {id: props.id}}" class="items-center border 
+                      rounded w-48 flex justify-center 
+                      py-1 bg-blue-500 text-white text-xs 
+                      flex font-bold hover:bg-blue-600">
+                      <AddView />
+            Criar nova permissão
+          </router-link>
+        </p>
+
         <div v-for="(descriptions, groupName) in groupedPermissions" :key="groupName">
           <h2 class="mt-4">{{ groupName }}</h2>
           <div class="p-2 border text-xs shadow border rounded bg-gray-100 flex items-center">
@@ -79,6 +91,7 @@ import { useStore } from 'vuex'
 import SppinerView from '@/icons/SppinerView.vue'
 import SaveView from '@/icons/SaveView.vue'
 import BackView from '@/icons/BackView.vue'
+import AddView from '@/icons/AddView.vue'
 import { toast } from 'vue3-toastify';
 
 const props = defineProps({
@@ -91,6 +104,7 @@ const props = defineProps({
 const store = useStore()
 
 const users = reactive({
+  id: '',
   name: '',
   email: '',
   password: '',
@@ -113,6 +127,7 @@ onMounted(async () => {
     const user = response.data.data;
     permissionsUser.value = response.data.data.permissions
 
+    users.id = user.id
     users.name = user.name
     users.email = user.email
 

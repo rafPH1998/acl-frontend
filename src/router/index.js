@@ -4,6 +4,7 @@ import DashboardView from '../views/DashboardView.vue'
 import LoginView from '../views/auth/LoginView.vue'
 import ListView from '../views/users/ListView.vue'
 import EditView from '../views/users/EditView.vue'
+import CreateView from '../views/permissioes/CreateView.vue'
 import store from '@/store'
 
 const routes = [
@@ -35,6 +36,13 @@ const routes = [
       name: 'edit', 
       component: EditView,
       props: true,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/permissoes/criar/:id',
+      name: 'permissoes', 
+      props: true,
+      component: CreateView,
       meta: { requiresAuth: true }
     },
   ]
