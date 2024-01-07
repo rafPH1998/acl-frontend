@@ -7,27 +7,46 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
             <p class="mb-5 text-3xl uppercase text-gray-600">Login</p>
-            <input 
-                type="email" 
-                name="email" 
-                v-model="form.email"
-                class="mb-5 p-3 w-80 focus:border-blue-700 rounded border-2 outline-none" 
-                placeholder="Email" 
-            >
-            <input 
-                type="password" 
-                name="password" 
-                v-model="form.password"
-                class="mb-5 p-3 w-80 focus:border-blue-700 rounded border-2 outline-none" 
-                placeholder="Senha" 
-                >
+
+            <div>
+              <input 
+                  type="email" 
+                  name="email" 
+                  v-model="form.email"
+                  :class="{'border border-rose-500': errors.email, 'border-2': !errors.email}"
+                  class="mb-1 p-3 w-80 focus:border-blue-700 rounded outline-none" 
+                  placeholder="Email" 
+              >
+              <p class="text-red-600 text-xs" v-if="errors.email">{{errors.email[0]}}</p>
+            </div>
+
+            <div class="mt-2">
+              <input 
+                  type="password" 
+                  name="password" 
+                  v-model="form.password"
+                  :class="{'border border-rose-500': errors.password, 'border-2': !errors.password}"
+                  class="mb-2 p-3 w-80 focus:border-blue-700 rounded outline-none" 
+                  placeholder="Senha" 
+              >
+              <p class="text-red-600 text-xs" v-if="errors.password">{{errors.password[0]}}</p>
+            </div>
+
             <button 
                 :disabled="processing"
-                class="bg-blue-600 hover:bg-blue-900 text-white font-bold p-2 rounded w-80" id="login" type="submit">
+                class="text-xs bg-blue-600 hover:bg-blue-900 text-white font-bold p-2 rounded w-80 mt-6" id="login" type="submit">
                 <span v-if="processing">Logando...</span>
                 <span v-else>Logar</span>
             </button>
-       <!--      <button class="bg-gray-600 mt-2 hover:bg-gray-900 text-white font-bold p-2 rounded w-80" id="login" type="submit"><span>Registrar-se</span></button> -->
+            <router-link 
+              :to="{ name: 'register'}"
+              class="bg-gray-600 mt-2 
+              hover:bg-gray-900 text-white 
+              font-bold p-2 rounded w-80
+              flex justify-center text-xs" 
+              >
+              Registrar-se
+            </router-link>
         </form>
     </div>
 </template>
@@ -37,6 +56,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { toast } from 'vue3-toastify';
 
 const router = useRouter()
 const store = useStore()
@@ -46,6 +66,7 @@ const form = ref({
     password: ''
 })
 
+const errors = ref('')
 const processing = ref(false)
 
 const auth = async () => {
@@ -59,13 +80,25 @@ const auth = async () => {
         })
 
         if (response.status === 200) {
-            store.dispatch('setToken', response.data.token)
-            router.push({ name: 'dashboard' })
-            await getUserAuth() 
+          store.dispatch('setToken', response.data.token)
+          router.push({ name: 'dashboard' })
+          await getUserAuth() 
+        }
+
+        if (response.data.error) {
+          toast.error(response.data.error, {
+            theme: 'colored',
+            autoClose: 2000,
+            position: 'bottom-right'
+          });
+
+          form.value.email = ''
+          form.value.password = ''
+          errors.value = ''
         }
 
     } catch (error) {
-        console.error(error)
+      errors.value = error.response.data.errors
     } finally {
         processing.value = false
     }
