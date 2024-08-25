@@ -139,7 +139,7 @@ const loadingUpdatePermission = ref(false);
 onMounted(async () => {
   loading.value = true
   try {
-    const response = await axios.get(`http://localhost:8899/users/${props.id}`, {
+    const response = await axios.get(`http://67.205.174.177/acl-api-laravel/public/users/${props.id}`, {
       headers: {
         Authorization: `Bearer ${store.state.token}`
       }
@@ -206,7 +206,7 @@ const updatePermissions = async () => {
   loadingUpdatePermission.value = true
   try {
     const response = await axios.post(
-      `http://localhost:8899/users/${props.id}/permissions-sync`,
+      `http://67.205.174.177/acl-api-laravel/public/users/${props.id}/permissions-sync`,
       { permissions: permissionsIds.value },
       {
         headers: {
@@ -242,7 +242,7 @@ const deletePermission = (permissionName) => {
 /* PEGA TODAS AS PERMISSOES DISPONIVEIS NO SISTEMA */
 const getPermissions = async () => {
   try {
-    return await axios.get('http://localhost:8899/permissions', {
+    return await axios.get('http://67.205.174.177/acl-api-laravel/public/permissions', {
       headers: {
         Authorization: `Bearer ${store.state.token}`
       }

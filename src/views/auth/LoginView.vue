@@ -73,7 +73,7 @@ const auth = async () => {
     processing.value = true
 
     try {
-        const response = await axios.post('http://localhost:8899/auth', {
+        const response = await axios.post('http://67.205.174.177/acl-api-laravel/public/auth', {
             email: form.value.email,
             password: form.value.password,
             device_name: 'user',
@@ -106,7 +106,7 @@ const auth = async () => {
 
 const getUserAuth = async () => {
     try {
-        const response = await axios.get('http://localhost:8899/me', {
+        const response = await axios.get('http://67.205.174.177/acl-api-laravel/public/me', {
             headers: {
                 Authorization: `Bearer ${store.state.token}`
             }

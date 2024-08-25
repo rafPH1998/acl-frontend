@@ -88,7 +88,7 @@ const addPermission = async () => {
     loading.value = true
 
     try {
-        const response = await axios.post('http://localhost:8899/permissions', {
+        const response = await axios.post('http://67.205.174.177/acl-api-laravel/public/permissions', {
           name: form.value.name,
           description: form.value.description,
         }, {

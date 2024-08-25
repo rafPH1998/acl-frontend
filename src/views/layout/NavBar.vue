@@ -92,7 +92,7 @@ const toggleSideNav = () => {
 const logout = async () => {
   try {
 
-    const response = await axios.post('http://localhost:8899/logout', null, {
+    const response = await axios.post('http://67.205.174.177/acl-api-laravel/public/logout', null, {
       headers: {
         Authorization: `Bearer ${store.state.token}`
       }

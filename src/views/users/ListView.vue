@@ -68,7 +68,7 @@ const loading = ref(false)
 onMounted(async () => {
     loading.value = true
     try {
-        const response = await axios.get('http://localhost:8899/users', {
+        const response = await axios.get('http://67.205.174.177/acl-api-laravel/public/users', {
             headers: {
                 Authorization: `Bearer ${store.state.token}`
             }
