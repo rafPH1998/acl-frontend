@@ -6,8 +6,7 @@
         :modal="modal" 
         :type="'permissão'"
         @closeModal="modal.show = false" 
-        @delete="deletePermission(modal.permissionName)"
-      />
+        @delete="deletePermission(modal.permissionName)" />
 
       <form method="POST" class="mt-4">
         <div class="grid gap-4 grid-cols-2 px-6">
@@ -39,9 +38,7 @@
         </div>
       </form>
 
-
       <div class="mt-2 p-6">
-
         <p class="flex flex-row-reverse">
           <router-link :to="{ name: 'permissoes', params: {id: props.id}}" class="items-center border 
                       rounded w-48 flex justify-center 
@@ -156,7 +153,6 @@ onMounted(async () => {
 
     const perms = await getPermissions()
     permissions.value = perms.data.data;
-    console.log(permissions)
 
   } catch (error) {
     console.error(error)
@@ -231,7 +227,7 @@ const updatePermissions = async () => {
   }
 };
 
-/* CHEGA AS PERMISSOES PARA DEIXAR O CHECKED NO HTML ATIVADO OU DESATIVADO */
+/* RETORNA AS PERMISSOES PARA DEIXAR O CHECKED NO HTML ATIVADO OU DESATIVADO */
 const checkPermissions = (groupName, description) => {
   return permissionsUser.value.some(permission => permission.name === groupName && permission.description === description);
 }
@@ -257,7 +253,6 @@ const getPermissions = async () => {
 }
 
 const openModal = (permName) => {
-  console.log(modal.value.permissionName)
   modal.value.permissionName = permName;
   modal.value.show = true;
 };
