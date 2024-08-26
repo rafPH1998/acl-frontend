@@ -106,7 +106,7 @@ const auth = async () => {
 
 const getUserAuth = async () => {
     try {
-        const response = await axios.get('http:://67.205.174.177/acl-api-laravel/public/me', {
+        const response = await axios.get('http://67.205.174.177/acl-api-laravel/public/me', {
             headers: {
                 Authorization: `Bearer ${store.state.token}`
             }
