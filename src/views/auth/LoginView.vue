@@ -113,7 +113,7 @@ const getUserAuth = async () => {
         });
         store.dispatch('setUser', response.data.data)
     } catch (error) {
-        console.error(error)
+        console.error()
     }
 }
 </script>
